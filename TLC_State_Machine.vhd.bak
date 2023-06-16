@@ -1,0 +1,161 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+Entity TLC_State_Machine IS Port
+(
+	sm_clken		: IN std_logic;
+	blink_sig	: IN std_logic;
+	red_out		: OUT std_logic;
+	yellow_out		: OUT std_logic;
+	green_out		: OUT std_logic;
+	light_out	: OUT std_logic_vector(6 downto 0); --ABCDEFG
+	
+	
+ );
+END ENTITY;
+
+Architecture SM of State_Machine_Example is
+ 
+ BEGIN
+ 
+ TYPE STATE_NAMES IS (S0, S1, S2, S3, S4, S5, S6, S7, S8, S9, S10, S11, S12, S13, S14, S15);   -- list all the STATE_NAMES values
+
+ 
+ SIGNAL current_state, next_state	:  STATE_NAMES;     	-- signals of type STATE_NAMES
+
+
+  --------------------------------------------------------------------------------
+ --State Machine:
+ --------------------------------------------------------------------------------
+
+ -- REGISTER_LOGIC PROCESS EXAMPLE
+ 
+Register_Section: PROCESS (clk_input, sm_clken)  -- this process updates with a clock
+BEGIN
+	IF(rising_edge(clk_input) AND sm_clken) THEN
+		IF (reset = '1') THEN
+			current_state <= S0;
+		ELSIF (reset = '0') THEN
+			current_state <= next_State;
+		END IF;
+	END IF;
+END PROCESS;	
+
+
+
+-- TRANSITION LOGIC PROCESS EXAMPLE
+
+Transition_Section: PROCESS (current_state) 
+
+BEGIN
+  CASE current_state IS
+        WHEN S0 =>	
+				nextstate <= S1
+
+         WHEN S1 =>		
+					next_state <= S2;
+
+         WHEN S2 =>		
+				next_state <= S3;
+				
+         WHEN S3 =>		
+				next_state <= S4;
+
+         WHEN S4 =>		
+					next_state <= S5;
+
+         WHEN S5 =>		
+					next_state <= S6;
+				
+         WHEN S6 =>		
+				next_state <= S7;
+				
+         WHEN S7 =>		
+				next_state <= S8;
+			
+			WHEN S8 =>		
+				next_state <= S9;
+			
+			WHEN S9 =>		
+				next_state <= S10;
+			
+			WHEN S10 =>		
+				next_state <= S11;
+			
+			WHEN S11 =>		
+				next_state <= S12;
+			
+			WHEN S12 =>		
+				next_state <= S13;
+			
+			WHEN S13 =>		
+				next_state <= S14;
+			
+			WHEN S14 =>		
+				next_state <= S15;
+			
+			WHEN S15 =>		
+				next_state <= S0;
+
+			WHEN OTHERS =>
+               next_state <= S0;
+	  END CASE;
+ END PROCESS;
+ 
+
+-- DECODER SECTION PROCESS EXAMPLE (MOORE FORM SHOWN)
+
+Decoder_Section: PROCESS (current_state, blink_sig) 
+
+BEGIN
+     CASE current_state IS
+	  
+         WHEN S0  =>		
+				red_out <= '0';
+				yellow_out <= '0';
+				green_out <= blink_sig;
+			
+         WHEN S1 =>		
+				red_out <= '0';
+				yellow_out <= '0';
+				green_out <= blink_sig;
+
+         WHEN S2 =>		
+				red_out <= '0';
+				yellow_out <= '0';
+				green_out <= '1';
+			
+         WHEN S3 =>		
+				red_out <= '0';
+				yellow_out <= '0';
+				green_out <= '1';
+
+         WHEN S4 =>		
+				red_out <= '0';
+				yellow_out <= '0';
+				green_out <= '1';
+
+         WHEN S5 =>		
+				red_out <= '0';
+				yellow_out <= '0';
+				green_out <= '1';
+				
+         WHEN S6 =>		
+				red_out <= '0';
+				yellow_out <= '1';
+				green_out <= '0';
+				
+         WHEN S7 =>		
+				red_out <= '0';
+				yellow_out <= '1';
+				green_out <= '0';
+
+			WHEN OTHERS =>
+            red_out <= '1';
+				yellow_out <= '0';
+				green_out <= '0';
+	  END CASE;
+ END PROCESS;
+
+ END ARCHITECTURE SM;
