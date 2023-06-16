@@ -1,4 +1,4 @@
-# FPGA - Traffic Light Controller System
+# 🚦 FPGA - Traffic Light Controller System 🚦
 
 > By Samson Shaji and George Wang
 
